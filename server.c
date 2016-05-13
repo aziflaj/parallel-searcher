@@ -16,6 +16,8 @@ int main(int argc, char *argv[]) {
   char buffer[256];
   struct sockaddr_in serv_addr, cli_addr;
   int n;
+  FILE *fp;
+  char *message, *filename;
 
   if (argc != 2) {
     printf("\tusage: %s <port>\n", argv[0]);
@@ -54,8 +56,16 @@ int main(int argc, char *argv[]) {
     error("ERROR reading from socket");
   }
 
-  printf("Client asks for file %s\n", buffer);
-  rc = send(newsockfd, "pong", strlen("pong"), 0);
+  buffer[n] = '\0';
+
+  fp = fopen(buffer, "r");
+  if (fp != NULL) {
+    message = "the file is found here";
+  } else {
+    message = "the file doesn't exist";
+  }
+
+  rc = send(newsockfd, message, strlen(message), 0);
   if (rc < 0) {
     error("error writing to socket");
   }

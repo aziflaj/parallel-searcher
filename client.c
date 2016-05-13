@@ -16,7 +16,7 @@ int main(int argc, char *argv[]) {
   struct hostent *server;
   int sockfd, portno, rc;
   char buffer[256];
-  char *msg;
+  char filename[40];
 
   if (argc != 3) {
     fprintf(stderr,"usage: %s <hostname> <port-no>\n", argv[0]);
@@ -46,14 +46,15 @@ int main(int argc, char *argv[]) {
   }
 
   printf("Emri i file-t: ");
-  fgets(buffer, 255, stdin);
-  rc = send(sockfd, buffer, strlen(buffer), 0);
+  // fgets(buffer, 255, stdin);
+  scanf("%s", filename);
+  // rc = send(sockfd, buffer, strlen(buffer), 0);
+  rc = send(sockfd, filename, strlen(filename), 0);
   if (rc < 0) {
     error("error writing to socket");
   }
 
   bzero(buffer, 256);
-
   rc = recv(sockfd, buffer, 255, 0);
   if (rc < 0) {
     error("ERROR reading from socket");
