@@ -20,12 +20,12 @@ all:
 client:
 	$(RM) client
 	$(CC) $(FLAGS) $(CLIENT_SRC) -o client
-	echo "Status: CLIENT BUILT"
+	echo "CLIENT BUILT"
 
 server:
 	$(CC) $(FLAGS) $(SERVER_SRC) -o server
 	$(MPICC) $(FLAGS) $(MPI_SEARCH_SRC) -o search
-	echo "Status: SERVER BUILT"
+	echo "SERVER BUILT"
 
 clean:
 	$(RM) client server search

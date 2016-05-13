@@ -3,7 +3,6 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
-
 #include <stdlib.h>
 #include <string.h>
 
@@ -17,6 +16,7 @@ int main(int argc, char *argv[]) {
   struct hostent *server;
   int sockfd, portno, rc;
   char buffer[256];
+  char *msg;
 
   if (argc != 3) {
     fprintf(stderr,"usage: %s <hostname> <port-no>\n", argv[0]);
@@ -39,42 +39,28 @@ int main(int argc, char *argv[]) {
   serv_addr.sin_port = htons(portno);
   bcopy((char*) server->h_addr, (char*) &serv_addr.sin_addr.s_addr, server->h_length);
 
-  if (connect(sockfd, &serv_addr, sizeof(serv_addr)) < 0) {
+  if (connect(sockfd, (struct sockaddr*) &serv_addr, sizeof(serv_addr)) < 0) {
     error("ERROR connecting");
   } else {
     printf("Connected!\n");
   }
 
-  while (1) {
-    printf("server(%s:%s)> ", argv[1], argv[2]);
-    fgets(buffer, 255, stdin);
-    rc = send(sockfd, buffer, strlen(buffer), 0);
-    if (rc < 0) {
-      error("error writing to socket")
-    }
-
-    // if(!strcmp(buffer, "hello")) {
-    //   printf("Brrravo\n");
-    // } else if (!strcmp(buffer, "exit")) {
-    //   break;
-    // } else {
-    //   printf("buffer: %s\n", buffer);
-    // }
-    //
-    // n = write(sockfd, buffer, strlen(buffer));
-    // if (n < 0) {
-    //   error("Error writing to server");
-    // }
-    //
-    // bzero(buffer, 256);
-    // n = read(sockfd, buffer, 255);
-    // if (n < 0) {
-    //   error("ERROR reading from socket");
-    // } else {
-    //   printf("%s\n",buffer);
-    // }
+  printf("Emri i file-t: ");
+  fgets(buffer, 255, stdin);
+  rc = send(sockfd, buffer, strlen(buffer), 0);
+  if (rc < 0) {
+    error("error writing to socket");
   }
 
-  close(sockfd);
+  bzero(buffer, 256);
+
+  rc = recv(sockfd, buffer, 255, 0);
+  if (rc < 0) {
+    error("ERROR reading from socket");
+  } else {
+    printf("Content of file:\n%s\nEND\n", buffer);
+  }
+
+  // close(sockfd);
   return 0;
 }

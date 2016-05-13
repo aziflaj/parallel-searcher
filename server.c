@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void error(const char *msg){
+void error(const char *msg) {
   perror(msg);
   exit(1);
 }
@@ -41,7 +41,6 @@ int main(int argc, char *argv[]) {
   listen(sockfd, 5);
 
   clilen = sizeof(cli_addr);
-  printf("clilen: %d\n", clilen);
   newsockfd = accept(sockfd, (struct sockaddr*) &cli_addr, &clilen);
   if (newsockfd < 0) {
     printf("\tError on accept\n");
@@ -50,17 +49,15 @@ int main(int argc, char *argv[]) {
     printf("CLIENT CONNECTED\n\n");
   }
 
-  while (1) {
-    n = recv(newsockfd, buffer, 255, 0);
-    if (n < 0) {
-      error("ERROR reading from socket");
-    }
+  n = recv(newsockfd, buffer, 255, 0);
+  if (n < 0) {
+    error("ERROR reading from socket");
+  }
 
-    // if (!strcmp(buffer,"hello")) {
-    //   printf("hello back!\n");
-    // }
-
-    printf("Client says: %s (%ld)\n", buffer, strlen(buffer));
+  printf("Client asks for file %s\n", buffer);
+  rc = send(newsockfd, "pong", strlen("pong"), 0);
+  if (rc < 0) {
+    error("error writing to socket");
   }
 
   close(newsockfd);
