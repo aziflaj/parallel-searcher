@@ -32,7 +32,7 @@ int main(int argc, char **argv) {
             char content[MAX_LEN];
             fgets(content, MAX_LEN, fp);
             // printf("Message from process %d:\n%s\n#### END PROCESS ####\n\n", rank, content);
-            printf("%s\n", content);
+            printf("%s", content);
         }
     }
 
