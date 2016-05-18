@@ -65,8 +65,12 @@ int main(int argc, char *argv[]) {
 
   if (fp != NULL) {
     fgets(message, 255, fp);
+    if (strlen(message) == 0 ) {
+      printf("message length: %d", ((int)strlen(message)));
+      strcpy(message, "File doesn't exist");
+    }
   } else {
-    strcpy(message, "Not found here");
+    strcpy(message, "Some error occurred while searching");
   }
 
   rc = send(newsockfd, message, strlen(message), 0);
