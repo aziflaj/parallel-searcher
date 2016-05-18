@@ -7,7 +7,7 @@
 #
 
 CC = gcc
-FLAGS = -std=c99
+FLAGS = -std=gnu99
 
 MPICC = mpicc
 
@@ -26,7 +26,7 @@ client:
 server:
 	$(CC) $(FLAGS) $(SERVER_SRC) -o server
 	$(MPICC) $(MPI_SEARCH_SRC) -o search
-	echo "SEACH BUILT"
+	echo "SERVER BUILT"
 
 clean:
 	$(RM) client server search

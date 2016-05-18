@@ -17,7 +17,8 @@ int main(int argc, char *argv[]) {
   struct sockaddr_in serv_addr, cli_addr;
   int n;
   FILE *fp;
-  char *message, *filename;
+  char message[256], command[256];
+  char *filename;
 
   if (argc != 2) {
     printf("\tusage: %s <port>\n", argv[0]);
@@ -57,12 +58,15 @@ int main(int argc, char *argv[]) {
   }
 
   buffer[n] = '\0';
+  strcpy(command, "mpirun -n 5 file_search ");
+  strcat(command, buffer);
+  printf("%s\n", command);
+  fp = popen(command, "r");
 
-  fp = fopen(buffer, "r");
   if (fp != NULL) {
-    message = "the file is found here";
+    fgets(message, 255, fp);
   } else {
-    message = "the file doesn't exist";
+    strcpy(message, "Not found here");
   }
 
   rc = send(newsockfd, message, strlen(message), 0);
@@ -70,7 +74,7 @@ int main(int argc, char *argv[]) {
     error("error writing to socket");
   }
 
-  close(newsockfd);
-  close(sockfd);
+  // close(newsockfd);
+  // close(sockfd);
   return 0;
 }

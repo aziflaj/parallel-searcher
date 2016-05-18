@@ -59,7 +59,7 @@ int main(int argc, char *argv[]) {
   if (rc < 0) {
     error("ERROR reading from socket");
   } else {
-    printf("Content of file:\n%s\nEND\n", buffer);
+    printf("Content of file:\n====\n%s\n====\nEND\n", buffer);
   }
 
   // close(sockfd);
