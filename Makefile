@@ -29,7 +29,7 @@ server:
 	echo "SERVER BUILT"
 
 clean:
-	$(RM) client server search
+	$(RM) client server file_search
 
 .SILENT: all client server search clean
 .PHONY: all client server search clean
