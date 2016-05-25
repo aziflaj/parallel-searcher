@@ -17,7 +17,8 @@ int main(int argc, char *argv[]) {
   struct sockaddr_in serv_addr, cli_addr;
   int n;
   FILE *fp;
-  char message[256], command[256];
+  char command[256];
+  char message[256] = "";
   char *filename;
 
   if (argc != 2) {
@@ -58,13 +59,17 @@ int main(int argc, char *argv[]) {
   }
 
   buffer[n] = '\0';
-  strcpy(command, "mpirun -n 5 file_search ");
+  strcpy(command, "mpirun -n 5 search ");
   strcat(command, buffer);
   printf("%s\n", command);
   fp = popen(command, "r");
 
   if (fp != NULL) {
-    fgets(message, 255, fp);
+    char ch;
+    while ((ch = fgetc(fp)) != EOF) {
+        sprintf(message, "%s%c", message, ch);
+    }
+    // fgets(message, 255, fp);
     if (strlen(message) == 0 ) {
       printf("message length: %d", ((int)strlen(message)));
       strcpy(message, "File doesn't exist");

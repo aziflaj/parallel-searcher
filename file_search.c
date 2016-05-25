@@ -29,10 +29,17 @@ int main(int argc, char **argv) {
         // printf("read %s\n\n", filename);
         fp = fopen(filename, "r");
         if (fp != NULL) {
-            char content[MAX_LEN];
-            fgets(content, MAX_LEN, fp);
+            char content[MAX_LEN] = "";
+            char ch;
+            do {
+                ch = fgetc(fp);
+                printf("%c", ch);
+                // sprintf(content, "%s%c", content, ch);
+            } while (ch != EOF);
+
+            // fgets(content, MAX_LEN, fp);
             // printf("Message from process %d:\n%s\n#### END PROCESS ####\n\n", rank, content);
-            printf("%s", content);
+            // printf("%s", content);
         }
     }
 
