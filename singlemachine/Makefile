@@ -13,7 +13,7 @@ all:
 	$(MPICC) $(MPI_SEARCH_SRC) -o search
 	echo "BUILT"
 
-buildrun:
+testrun:
 	$(MAKE)
 	mpirun -n 5 ./search testfile.txt
 
